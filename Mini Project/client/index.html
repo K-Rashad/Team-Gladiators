@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Treasury Bank ATM System</title>
+    <link rel="stylesheet" href="style.css" >
+  </head>
+ 
+  <body>
+    <div class="container"  id="sectionWithdraw">
+      <h2>Treasury Bank ATM</h2>
+      
+        <label for="uname">User Name</label>
+        <input type="text" id="etUsername" name="uname" value="" placeholder="User Name" autocomplete="off"/>
+        <br><br>
+        <label for="amount">Withdrawal Amount</label>
+        <input type="text" id="etAmount" name="amount" value="" placeholder="Withdrawal Amount" autocomplete="off"/>
+        <br><br>
+        <button id="btnWithdraw">WITHDRAW</button>
+    
+      <div class="bottom_container">
+        <h5>Contact Us</h5>
+      </div>
+    </div>
+ 
+    <div class="container"  id="sectionBalance" style="display: none;">
+      <h2>Treasury Bank ATM</h2><br>
+      <h3>Withdrawal Successful</h3><br>
+      <label for="balance" class="label">Savings Balance</label>
+      <input type="text" id="etBalance" name="balance" disabled /><br />
+      <br />
+      <br />
+      <br />
+ 
+      <h3>Thank You For Banking With Us</h3>
+      <div class="bottom_container">
+        <h5>Contact Us</h5>
+      </div>
+    </div>  
+    <div  class="container"  id="cs" style="display: none;">
+              <h2>Treasury Bank ATM</h2>
+
+              <h3>Invalid credentials or insufficient balance</h3>
+           
+    
+      <div class="bottom_container">
+      <h5>Contact Us</h5>
+      </div>
+    </div>
+    
+ 
+    
+    <script src="index.js"></script>
+  </body>
+</html>

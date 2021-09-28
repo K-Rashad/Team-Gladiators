@@ -1,0 +1,19 @@
+{
+  "name": "db-hospital-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
+  },
+  "author": "Rashad",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "env": "0.0.2",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
