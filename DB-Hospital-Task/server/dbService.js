@@ -76,7 +76,7 @@ class DbService {
 
 
       const response = await new Promise((resolve, reject) => {
-        const query = `INSERT INTO Record(uic,service_id,hospital_code,doctor_id,prescribed_medicines,Date,bill_id)  values(${i.uic},${i.service_id},${i.hospital_code},'${i.doctor_id}','${i.prescribed_medicines}','${i.Date}',${i.bill_id});`;
+        const query = `INSERT INTO Record(uic,service_id,hospital_code,doctor_id,prescribed_medicines,Date)  values(${i.uic},${i.service_id},${i.hospital_code},'${i.doctor_id}','${i.prescribed_medicines}','${i.Date}');`;
 
         connection.query(query, (err, result) => {
           if (err) reject(new Error(err.message));
@@ -193,7 +193,7 @@ class DbService {
   async queryThird() {
     try {
       const response = await new Promise((resolve, reject) => {
-        const query = "SELECT DISTINCT Doctor.doctor_name AS DoctorName FROM Doctor, Hospital WHERE Hospital.hospital_code = Doctor.hospital_code AND Hospital.hospital_name = 'DBM';";
+        const query = "SELECT Individual.name, Record.id, Record.Date, Service.service_name, Hospital.hospital_name, Record.prescribed_medicines, Doctor.doctor_name from Record, Service, Hospital, Individual, Doctor where Record.uic= 23742 and Individual.uic= Record.uic and Hospital.hospital_code= Record.hospital_code and Service.service_id= Record.service_id and Doctor.doctor_id= Record.doctor_id;";
 
         connection.query(query, (err, results) => {
           if (err) reject(new Error(err.message));
