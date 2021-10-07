@@ -17,27 +17,78 @@ app.use(cors());
 
 
 
-// app.get("/getall", async (req, res) => {
-
-//   const db = dbService.getDbServiceInstance();
 
 
 
-//   var data = await db.getAllData();
 
-//   console.log(data);
 
-//   if (data) {
-//     res.status(200).json(data);
-//   } else {
-//     res.status(404).json({
-//       status: "FAILURE",
-//       message: "data not found",
-//     });
 
-//   }
 
-// })
+app.post("/emptyforloop", async (req,res)=>{
+
+  const db = dbService.getDbServiceInstance();
+
+  let users = false;
+
+  users = await db.forloop();
+
+  if (users) {
+
+      
+
+    res.status(200).json({
+      message: "insertion succssful",
+      status: "SUCCESS",
+
+    });
+
+  } else {
+
+    return res.status(404).json({
+      status: "FAILURE",
+      message: "user not found",
+    });
+
+  }
+    
+
+
+})
+
+app.post("/newloop", async (req,res)=>{
+
+
+  var data=req.body
+  const db = dbService.getDbServiceInstance();
+
+  let users = false;
+
+  users = await db.newloop(data);
+
+  if (users) {
+
+      
+
+    res.status(200).json({
+      message: "insertion succssful",
+      status: "SUCCESS",
+
+    });
+
+  } else {
+
+    return res.status(404).json({
+      status: "FAILURE",
+      message: "user not found",
+    });
+
+  }
+    
+
+
+})
+
+
 
 
 
@@ -65,7 +116,7 @@ app.post("/insert/recorddata", async (req, res) => {
         message: "insertion succssful",
         status: "SUCCESS",
   
-      }); 
+      });
   
     } else {
   
@@ -270,40 +321,6 @@ app.get("/query5", async (req, res) => {
 
 
 
-// app.patch("/login", async (req, res) => {
-
-//   const { username, pin } = req.body;
-
-//   const db = dbService.getDbServiceInstance();
-
-//   let users = [];
-//   try {
-//     users = await db.authenticateUser(username, pin);
-//   } catch (error) {
-//     res.status(500).json({
-//       error: error,
-//     });
-//   }
-
-//   if (users.length === 0) {
-//     return res.status(404).json({
-//       status: "NOT_FOUND",
-//       message: "user not found",
-//     });
-//   }
-//   res.status(200).json({
-//     message: "login succssful",
-//     status: "SUCCESS",
-//     user: users[0]
-//   });
-
-
-
-
-
-
-
-// })
 
 
 

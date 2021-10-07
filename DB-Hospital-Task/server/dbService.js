@@ -7,7 +7,7 @@ dotenv.config();
 
 let instance = null;
 
-const pool = mysql.createPool({
+const connection = mysql.createConnection({
   connectionLimit: 100,
   host: process.env.HOST,
   user: process.env.USERNAME,
@@ -16,7 +16,7 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT,
 });
 
-pool.getConnection((err, connection) => {
+connection.connect((err) => {
   if (err) {
     console.log(err.message);
   }
@@ -28,21 +28,100 @@ class DbService {
     return instance ? instance : new DbService();
   }
 
-  async getAllData() {
-    try {
-      const response = await new Promise((resolve, reject) => {
-        const query = "SELECT * FROM Record;";
+  forloop() {
 
-        connection.query(query, (err, results) => {
-          if (err) reject(new Error(err.message));
-          resolve(results);
-        });
-      });
-      return response;
+    try {
+
+      var a = new Date;
+
+      for (let i = 0; i < 1000000; i++) {
+        console.log('Hi');
+      }
+
+      var b = new Date;
+
+      console.log(a);
+      console.log(b);
+      console.log(b - a);
+
+      return true;
+
+
     } catch (error) {
+
       console.log("error in read", error);
     }
+
+
   }
+
+
+
+  newloop(data) {
+
+  
+    var a = new Date;
+
+    
+    for(let i=0;i<data.length;i++){
+
+
+
+
+      
+        const query = `INSERT INTO Test(name) values("${data[i].name}");`;
+
+        connection.query(query, (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+
+      
+        });
+
+
+
+
+      }
+
+      
+
+
+
+      var b = new Date
+
+
+      console.log(a);
+      console.log(b);
+      console.log(b - a);
+
+      return true; 
+
+
+    
+
+
+  }
+
+
+
+
+
+  async getAllData() {
+      try {
+        const response = await new Promise((resolve, reject) => {
+          const query = "SELECT * FROM Record;";
+
+          connection.query(query, (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          });
+        });
+        return response;
+      } catch(error) {
+        console.log("error in read", error);
+      }
+    }
 
 
   // async updateBalance(balance, username) {
@@ -66,23 +145,23 @@ class DbService {
   async insertData(data) {
 
 
-    // var k = 0
+      // var k = 0
 
-    // k = await data.map(async (i) => {
-
-
+      // k = await data.map(async (i) => {
 
 
-   var rows=o
+
+
+      var rows = 0;
 
 
       const response = await new Promise((resolve, reject) => {
-        const query = `INSERT INTO Record(uic,service_id,hospital_code,doctor_id,prescribed_medicines,Date)  values(${i.uic},${i.service_id},${i.hospital_code},'${i.doctor_id}','${i.prescribed_medicines}','${i.Date}');`;
+        const query = `INSERT INTO Record(uic,service_id,hospital_code,doctor_id,prescribed_medicines,Date)  values(${data.uic},${data.service_id},${data.hospital_code},'${data.doctor_id}','${data.prescribed_medicines}','${data.Date}');`;
 
         pool.query(query, (err, result) => {
           if (err) reject(new Error(err.message));
 
-          row+=1
+          rows += 1
 
           resolve();
         });
@@ -92,29 +171,33 @@ class DbService {
 
       });
 
-    // })
+      // })
 
 
 
 
 
-    return rows != 0 ? true : false;
+
+
+      return rows != 0 ? true : false;
 
 
 
-  }
+
+
+    }
 
   async insertBillData(data) {
 
-    //   data.map( (i)=>{
+      //   data.map( (i)=>{
 
-    //   console.log(i.id);
-    //   console.log(i.name);
+      //   console.log(i.id);
+      //   console.log(i.name);
 
-    //   })
-    // }
+      //   })
+      // }
 
-    var k = 0
+      var k = 0
 
     k = await data.map(async (i) => {
 
@@ -124,29 +207,29 @@ class DbService {
 
 
 
-      const response = await new Promise((resolve, reject) => {
-        const query = `INSERT INTO Bill(bill_amount) values(${i.bill_amount});`;
+        const response = await new Promise((resolve, reject) => {
+          const query = `INSERT INTO Bill(bill_amount) values(${i.bill_amount});`;
 
-        connection.query(query, (err, result) => {
-          if (err) reject(new Error(err.message));
+          connection.query(query, (err, result) => {
+            if (err) reject(new Error(err.message));
 
-          resolve();
+            resolve();
+          });
+
+
+
+
         });
 
 
 
 
-      });
 
 
 
 
 
-
-
-
-
-    })
+      })
 
 
 
@@ -156,96 +239,96 @@ class DbService {
 
 
 
-  }
+    }
 
   async queryFirst() {
-    try {
-      const response = await new Promise((resolve, reject) => {
-        const query = "SELECT COUNT(*) AS NumberOfRecords FROM Record,Hospital WHERE Record.hospital_code = Hospital.hospital_code AND Hospital.hospital_name = 'KMH';";
+      try {
+        const response = await new Promise((resolve, reject) => {
+          const query = "SELECT COUNT(*) AS NumberOfRecords FROM Record,Hospital WHERE Record.hospital_code = Hospital.hospital_code AND Hospital.hospital_name = 'KMH';";
 
-        connection.query(query, (err, results) => {
-          if (err) reject(new Error(err.message));
-          resolve(results);
+          connection.query(query, (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          });
         });
-      });
-      return response;
-    } catch (error) {
-      console.log("error in read", error);
+        return response;
+      } catch(error) {
+        console.log("error in read", error);
+      }
     }
-  }
 
 
   async querySecond() {
-    try {
-      const response = await new Promise((resolve, reject) => {
-        const query = "SELECT COUNT(DISTINCT Record.uic) AS NumberOfPatients FROM Record, Doctor WHERE Record.doctor_id = Doctor.doctor_id AND Doctor.doctor_name = 'Pearl Walsh';";
+      try {
+        const response = await new Promise((resolve, reject) => {
+          const query = "SELECT COUNT(DISTINCT Record.uic) AS NumberOfPatients FROM Record, Doctor WHERE Record.doctor_id = Doctor.doctor_id AND Doctor.doctor_name = 'Pearl Walsh';";
 
-        connection.query(query, (err, results) => {
-          if (err) reject(new Error(err.message));
-          resolve(results);
+          connection.query(query, (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          });
         });
-      });
-      return response;
-    } catch (error) {
-      console.log("error in read", error);
+        return response;
+      } catch(error) {
+        console.log("error in read", error);
+      }
     }
-  }
 
 
 
   async queryThird() {
-    try {
-      const response = await new Promise((resolve, reject) => {
-        const query = "SELECT Individual.name, Record.id, Record.Date, Service.service_name, Hospital.hospital_name, Record.prescribed_medicines, Doctor.doctor_name from Record, Service, Hospital, Individual, Doctor where Record.uic= 23742 and Individual.uic= Record.uic and Hospital.hospital_code= Record.hospital_code and Service.service_id= Record.service_id and Doctor.doctor_id= Record.doctor_id;";
+      try {
+        const response = await new Promise((resolve, reject) => {
+          const query = "SELECT Individual.name, Record.id, Record.Date, Service.service_name, Hospital.hospital_name, Record.prescribed_medicines, Doctor.doctor_name from Record, Service, Hospital, Individual, Doctor where Record.uic= 23742 and Individual.uic= Record.uic and Hospital.hospital_code= Record.hospital_code and Service.service_id= Record.service_id and Doctor.doctor_id= Record.doctor_id;";
 
-        connection.query(query, (err, results) => {
-          if (err) reject(new Error(err.message));
-          resolve(results);
+          connection.query(query, (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          });
         });
-      });
-      return response;
-    } catch (error) {
-      console.log("error in read", error);
+        return response;
+      } catch(error) {
+        console.log("error in read", error);
+      }
     }
-  }
 
 
 
 
   async queryFourth() {
-    try {
-      const response = await new Promise((resolve, reject) => {
-        const query = "SELECT Individual.name, Individual.contact_number FROM Individual, Hospital, Record WHERE Individual.uic = Record.uic AND Hospital.hospital_code = Record.hospital_code AND Hospital.hospital_name = 'BRC' AND Individual.blood_group = 'AB-';";
+      try {
+        const response = await new Promise((resolve, reject) => {
+          const query = "SELECT Individual.name, Individual.contact_number FROM Individual, Hospital, Record WHERE Individual.uic = Record.uic AND Hospital.hospital_code = Record.hospital_code AND Hospital.hospital_name = 'BRC' AND Individual.blood_group = 'AB-';";
 
-        connection.query(query, (err, results) => {
-          if (err) reject(new Error(err.message));
-          resolve(results);
+          connection.query(query, (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          });
         });
-      });
-      return response;
-    } catch (error) {
-      console.log("error in read", error);
+        return response;
+      } catch(error) {
+        console.log("error in read", error);
+      }
     }
-  }
 
 
 
 
   async queryFifth() {
-    try {
-      const response = await new Promise((resolve, reject) => {
-        const query = "SELECT Individual.Name AS PatientName FROM Individual, Record WHERE Individual.uic = Record.uic GROUP BY Record.uic ORDER BY COUNT(*) DESC LIMIT 1;";
+      try {
+        const response = await new Promise((resolve, reject) => {
+          const query = "SELECT Individual.Name AS PatientName FROM Individual, Record WHERE Individual.uic = Record.uic GROUP BY Record.uic ORDER BY COUNT(*) DESC LIMIT 1;";
 
-        connection.query(query, (err, results) => {
-          if (err) reject(new Error(err.message));
-          resolve(results);
+          connection.query(query, (err, results) => {
+            if (err) reject(new Error(err.message));
+            resolve(results);
+          });
         });
-      });
-      return response;
-    } catch (error) {
-      console.log("error in read", error);
+        return response;
+      } catch(error) {
+        console.log("error in read", error);
+      }
     }
-  }
 
 
 
