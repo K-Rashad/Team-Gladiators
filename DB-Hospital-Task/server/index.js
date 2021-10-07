@@ -65,7 +65,7 @@ app.post("/insert/recorddata", async (req, res) => {
         message: "insertion succssful",
         status: "SUCCESS",
   
-      });
+      }); 
   
     } else {
   

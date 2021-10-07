@@ -7,7 +7,8 @@ dotenv.config();
 
 let instance = null;
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
+  connectionLimit: 100,
   host: process.env.HOST,
   user: process.env.USERNAME,
   password: process.env.PASSWORD,
@@ -15,7 +16,7 @@ const connection = mysql.createConnection({
   port: process.env.DB_PORT,
 });
 
-connection.connect((err) => {
+pool.getConnection((err, connection) => {
   if (err) {
     console.log(err.message);
   }
@@ -65,38 +66,40 @@ class DbService {
   async insertData(data) {
 
 
-     var k=0
+    // var k = 0
 
-     k= await data.map(async (i) => {
-
-
+    // k = await data.map(async (i) => {
 
 
 
+
+   var rows=o
 
 
       const response = await new Promise((resolve, reject) => {
         const query = `INSERT INTO Record(uic,service_id,hospital_code,doctor_id,prescribed_medicines,Date)  values(${i.uic},${i.service_id},${i.hospital_code},'${i.doctor_id}','${i.prescribed_medicines}','${i.Date}');`;
 
-        connection.query(query, (err, result) => {
+        pool.query(query, (err, result) => {
           if (err) reject(new Error(err.message));
+
+          row+=1
 
           resolve();
         });
-         
-           
+
+
 
 
       });
 
-       })
-
-    
+    // })
 
 
-    
-    return k != 0 ? true : false  ;
-    
+
+
+
+    return rows != 0 ? true : false;
+
 
 
   }
@@ -111,9 +114,9 @@ class DbService {
     //   })
     // }
 
-     var k=0
+    var k = 0
 
-     k= await data.map(async (i) => {
+    k = await data.map(async (i) => {
 
 
 
@@ -129,13 +132,13 @@ class DbService {
 
           resolve();
         });
-         
-           
+
+
 
 
       });
 
-      
+
 
 
 
@@ -145,12 +148,12 @@ class DbService {
 
     })
 
-    
 
 
-    
-    return k != 0 ? true : false  ;
-    
+
+
+    return k != 0 ? true : false;
+
 
 
   }
